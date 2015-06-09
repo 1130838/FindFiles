@@ -9,29 +9,47 @@ import java.util.List;
 public class Filewalker {
 
     List<String> workbookFileList = new ArrayList<String>();
+    List<String> workbookPathList = new ArrayList<String>();
+
     File[] paths;
     FilenameFilter fileNameFilter;
     File file;
 
-    public void walk(String pathUser) {
+    public Filewalker() {
+    }
+
+    public void walk(String path, final String extension) {
 
         // create new file
-        file = new File(pathUser);
-        // create new filename filter
-        fileNameFilter = new FilenameFilter() {
+        file = new File(path);
 
-            @Override
-            public boolean accept(File dir, String name) {
-                if (name.toLowerCase().endsWith(".txt")) {
-                    workbookFileList.add(name);
-                    return true;
-                }
-                return false;
+        File[] list = file.listFiles();
+
+        for (File anyFile : list) {
+
+            if (anyFile.isDirectory()) {
+                walk(anyFile.getAbsolutePath(), extension);
+            } else {
+
+                // create new filename filter
+                fileNameFilter = new FilenameFilter() {
+
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        if (name.toLowerCase().endsWith(extension)) {
+                            return true;
+                        }
+                        return false;
+                    }
+                };
+
+                // returns pathnames for files and directory
+                paths = file.listFiles(fileNameFilter);
+               // fills the List with file names and path names
+                workbookFileList.add(anyFile.getAbsoluteFile().getName());
+                workbookPathList.add(anyFile.getAbsolutePath());
             }
-        };
-
-        // returns pathnames for files and directory
-        paths = file.listFiles(fileNameFilter);
+        }
     }
 
     public File[] getPaths() {
@@ -40,5 +58,9 @@ public class Filewalker {
 
     public List<String> getWorkbookFileList() {
         return workbookFileList;
+    }
+
+    public List<String> getWorkbookPathList() {
+        return workbookPathList;
     }
 }

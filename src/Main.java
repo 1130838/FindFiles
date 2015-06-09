@@ -5,20 +5,19 @@ public class Main {
 
     public static void main(String[] args) {
         Filewalker filewalker = new Filewalker();
-        filewalker.walk("C:\\Users\\bruno.devesa\\IdeaProjects\\FindFiles");
+        String caminho = "C:\\Users\\bruno.devesa\\IdeaProjects\\FindFiles\\pastacenas";
+        String extension = "txt";
+        filewalker.walk(caminho,extension);
+
         List<String> workbookFileList = filewalker.getWorkbookFileList();
-        File[] workbookPathList = filewalker.getPaths();
+        List<String> workbookPathList = filewalker.getWorkbookPathList();
 
         System.out.println("All files *.txt are here listed: ");
         for (int i = 0; i < workbookFileList.size(); i++) {
+            System.out.println("------------------------------------------------------------------------------------------------------------------");
             System.out.println("file : " + workbookFileList.get(i));
-        }
+            System.out.println("path : " + workbookPathList.get(i));
 
-        // for each pathname in pathname array
-        for (File path : workbookPathList) {
-            // prints file and directory paths
-             System.out.println("path : " + path);
         }
-
     }
 }
