@@ -3,6 +3,7 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Created by bruno.devesa on 09-06-2015.
  */
@@ -23,34 +24,43 @@ public class Filewalker {
         // create new file
         file = new File(path);
 
-        File[] list = file.listFiles();
+        File[] allFilesList = file.listFiles();
 
-        for (File anyFile : list) {
+        // create new filename filter
+        fileNameFilter = new FilenameFilter() {
+
+            @Override
+            public boolean accept(File dir, String name) {
+                if (name.toLowerCase().endsWith(extension)) {
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        paths = file.listFiles(fileNameFilter);
+
+        for (int i = 0; i < paths.length; i++) {
+
+
+            //  System.out.println("testing content of paths array : ");
+           // System.out.println(paths[i].getAbsolutePath());
+            workbookFileList.add(paths[i].getAbsoluteFile().getName());
+            workbookPathList.add(paths[i].getAbsolutePath());
+
+            //System.out.println("end testing");
+        }
+
+
+        for (File anyFile : allFilesList) {
 
             if (anyFile.isDirectory()) {
                 walk(anyFile.getAbsolutePath(), extension);
-            } else {
-
-                // create new filename filter
-                fileNameFilter = new FilenameFilter() {
-
-                    @Override
-                    public boolean accept(File dir, String name) {
-                        if (name.toLowerCase().endsWith(extension)) {
-                            return true;
-                        }
-                        return false;
-                    }
-                };
-
-                // returns pathnames for files and directory
-                paths = file.listFiles(fileNameFilter);
-               // fills the List with file names and path names
-                workbookFileList.add(anyFile.getAbsoluteFile().getName());
-                workbookPathList.add(anyFile.getAbsolutePath());
             }
         }
+
     }
+
 
     public File[] getPaths() {
         return paths;

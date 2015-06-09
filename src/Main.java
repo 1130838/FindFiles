@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class Main {
@@ -19,5 +20,14 @@ public class Main {
             System.out.println("path : " + workbookPathList.get(i));
 
         }
+        int numberFiles = workbookFileList.size();
+        System.out.println("total number of files founded = " + numberFiles);
+
+
+     /*   try {
+            filewalker.GetAllFiles();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 }
